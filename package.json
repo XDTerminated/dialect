@@ -12,9 +12,11 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.446.0",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
+    "react-icons": "^5.3.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -25,7 +27,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.13", // or use "^3.4.1" if you prefer
     "typescript": "^5"
   }
 }
