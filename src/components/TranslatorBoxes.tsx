@@ -1,5 +1,5 @@
 import React from "react";
-import { NonEditableTextarea, Textarea } from "./ui/textarea";
+import { NonEditableTextarea, Textarea } from "./ui/Textarea";
 
 const TranslatorBoxes = () => {
     return (
