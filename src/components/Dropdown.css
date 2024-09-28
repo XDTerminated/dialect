@@ -1,0 +1,107 @@
+/* Basic Dropdown Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown Button */
+  .dropdown-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .dropdown-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #2980b9;
+  }
+  
+  /* Arrow Indicator */
+  .arrow {
+    margin-left: 8px;
+    font-size: 12px;
+  }
+  
+  /* Dropdown Content (Container for search input and menu) */
+  .dropdown-content {
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    margin-top: 8px;
+    z-index: 1;
+    padding: 8px 0;
+    color:rgb(166, 166, 166)
+  }
+  
+  /* Search Input */
+  .dropdown-search {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  .dropdown-search:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  /* Dropdown Menu */
+  .dropdown-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Dropdown Items */
+  .dropdown-item {
+    width: 100%;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  
+  /* Hover state for dropdown items */
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    background-color: #f1f1f1;
+    outline: none;
+  }
+  
+  /* Active Item (selected via arrow keys) */
+  .active {
+    background-color: #ddd;
+  }
+  
+  /* No Results Found */
+  .dropdown-no-results {
+    padding: 8px 16px;
+    text-align: center;
+    color: #999;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 600px) {
+    .dropdown-button {
+      width: 100%;
+    }
+  
+    .dropdown-menu {
+      width: 100%;
+      left: 0;
+    }
+  }
+  
