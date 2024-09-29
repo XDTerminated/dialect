@@ -205,7 +205,7 @@ const TranslatorBoxes = () => {
             <div className="flex space-x-4 flex-[20_0_0%] w-full">
                 {/* Editable Textarea (Left Box) */}
                 <Textarea
-                    className="rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none"
+                    className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none"
                     placeholder="Type here..."
                     value={textareaValue} // Bind the state to the Textarea
                     onChange={(e) => setTextareaValue(e.target.value)} // Update state on change
@@ -214,7 +214,7 @@ const TranslatorBoxes = () => {
 
                 {/* Non-editable Textarea (Right Box) */}
                 <NonEditableTextarea
-                    className="rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-50 resize-none"
+                    className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none"
                     placeholder="Translation will appear here..."
                     value={translationValue} // Bind the state of the non-editable Textarea
                     readOnly

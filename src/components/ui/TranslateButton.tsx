@@ -21,6 +21,7 @@ const TranslateButton: React.FC<TranslateButtonProps> = ({ onClick }) => {
         rounded 
         transition 
         duration-300
+        text-xl
       "
         >
             Translate

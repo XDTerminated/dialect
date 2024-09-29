@@ -194,7 +194,7 @@ const TitleBar = () => {
           </defs>
         </svg>
         {/* Title */}
-        <h1 className="text-xl font-bold">Placeholder</h1>
+        <h1 className="text-xl font-bold" style = {{ color: 'white', fontSize: '48px' }}>Dialect</h1>
       </div>
       {/* Nightmode Button */}
       <NightmodeButton />

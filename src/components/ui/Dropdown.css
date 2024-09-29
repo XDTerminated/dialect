@@ -14,11 +14,18 @@
     cursor: pointer;
     border-radius: 4px;
     width: 100%;
+    font-size: large;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
   
-  .dropdown-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #2980b9;
+  .dropdown-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .dropdown-button:active {
+    background-color: #1e6a92;
   }
   
   /* Arrow Indicator */
@@ -37,7 +44,11 @@
     margin-top: 8px;
     z-index: 1;
     padding: 8px 0;
-    color:rgb(166, 166, 166)
+    color:rgb(166, 166, 166);
+    overflow: hidden;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
   }
   
   /* Search Input */
@@ -68,11 +79,15 @@
     width: 100%;
     padding: 8px 16px;
     background: none;
+    background-color: white;
     border: none;
     text-align: left;
+    display: block;
     cursor: pointer;
+    opacity: 0;
     font-size: 14px;
-    transition: background-color 0.2s;
+    transform: translateY(-20px); 
+    transition: background-color 0.2s ease-out, transform 0.2s ease-out, opacity 0.2s ease-out;
   }
   
   /* Hover state for dropdown items */
@@ -87,6 +102,41 @@
     background-color: #ddd;
   }
   
+  @keyframes dropdownSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+ 
+  .dropdown-item {
+    animation: dropdownSlide 0.3s ease-out forwards;
+  }
+  
+  .dropdown-item:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .dropdown-item:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .dropdown-item:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .dropdown-item:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  .dropdown-item:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+  .dropdown-item:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+  
+
   /* No Results Found */
   .dropdown-no-results {
     padding: 8px 16px;
@@ -105,4 +155,10 @@
       left: 0;
     }
   }
+  
+  /* Show dropdown content on hover*/
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
   

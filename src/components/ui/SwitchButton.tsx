@@ -5,6 +5,7 @@ import { GoArrowSwitch } from 'react-icons/go';
 const SwitchButton: React.FC = () => {
   return (
     <button
+      style={{ color: 'white' }} // Inline style to set text color to white
       className="
         flex-1 
         flex 
