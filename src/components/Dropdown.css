@@ -1,0 +1,160 @@
+/* Basic Dropdown Container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Button */
+.dropdown-button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.dropdown-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #2980b9;
+}
+
+/* Arrow Indicator */
+.arrow {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+/* Dropdown Content (Container for search input and menu) */
+.dropdown-content {
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  margin-top: 8px;
+  z-index: 1;
+  padding: 8px 0;
+  color: rgb(166, 166, 166);
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+}
+
+/* Search Input */
+.dropdown-search {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.dropdown-search:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  background-color: white;
+  border: none;
+  text-align: left;
+  display: block;
+  cursor: pointer;
+  opacity: 0;
+  font-size: 14px;
+  transform: translateY(-20px);
+  transition: background-color 0.2s ease-out, transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+/* Hover state for dropdown items */
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #f1f1f1;
+  outline: none;
+}
+
+/* Active Item (selected via arrow keys) */
+.active {
+  background-color: #ddd;
+}
+
+@keyframes dropdownSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  animation: dropdownSlide 0.3s ease-out forwards;
+}
+
+.dropdown-item:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.dropdown-item:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.dropdown-item:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.dropdown-item:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+.dropdown-item:nth-child(5) {
+  animation-delay: 1.0s;
+}
+
+.dropdown-item:nth-child(6) {
+  animation-delay: 1.2s;
+}
+
+
+/* No Results Found */
+.dropdown-no-results {
+  padding: 8px 16px;
+  text-align: center;
+  color: #999;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .dropdown-button {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Show dropdown content on hover*/
+.dropdown:hover .dropdown-content {
+  display: block;
+}
