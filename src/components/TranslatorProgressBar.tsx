@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Progress } from "@/components/ui/Progress";
 import { fetchResponse } from "@/api/fetchResponse";
 import TranslateButton from "@/components/ui/TranslateButton";
+import TrashButton from "./ui/TrashButton";
 
 const TranslatorApp = () => {
     const [text, setText] = useState("");
@@ -66,8 +67,8 @@ const TranslatorApp = () => {
                 </div>
             )}
 
-            <textarea className="w-full h-32 p-2 border" value={text} onChange={(e) => setText(e.target.value)} disabled={isTranslating} placeholder="Enter text to translate..." />
-
+            <textarea className="w-full h-32 p-2 border" value={text} onChange={(e) => setText(e.target.value)} disabled={isTranslating}/>
+                
             <TranslateButton onClick={handleTranslate} disabled={isTranslating} isTranslating={isTranslating} />
 
             {translatedText && (

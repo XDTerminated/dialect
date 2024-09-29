@@ -12,7 +12,7 @@ export const fetchResponse = async (text: string, translate1: string, translate2
     text = text
         .replace(/\n/g, " ") // Replace newlines with spaces
         .replace(/"/g, "'") // Replace double quotes with single quotes
-        .replace(/[^a-zA-Z0-9\s.,!?'"-]/g, " "); // Replace non-alphanumeric except regular punctuation with spaces
+        .replace(/[^a-zA-Z0-9\s.,!?'-]/g, " "); // Replace non-alphanumeric except regular punctuation with spaces
 
     const prompt = `Translate [${text}] from [${translate1}] to [${translate2}]`;
 

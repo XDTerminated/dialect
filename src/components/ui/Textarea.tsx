@@ -3,9 +3,10 @@ import { cn } from "@/lib/utils";
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     className?: string;
+    disabled: boolean;
 }
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, disabled, ...props }, ref) => {
     return (
         <div className="flex justify-center flex-1">
             <textarea
@@ -15,7 +16,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ classNa
                     "ring-offset-background",
                     "placeholder:text-muted-foreground",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    "hover:ring-2 hover:ring-offset-2 hover:ring-gray-400",
+                    !disabled && "hover:ring-2 hover:ring-offset-2 hover:ring-gray-400",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     "resize-none transition",
                     "text-gray-900 dark:text-gray-100", // Dark mode text color
@@ -23,6 +24,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ classNa
                     className
                 )}
                 ref={ref}
+                disabled={disabled}
                 {...props}
             />
         </div>
@@ -35,7 +37,7 @@ export default Textarea;
 Textarea.displayName = "Textarea";
 
 // Non-editable Textarea component
-const NonEditableTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
+const NonEditableTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, disabled, ...props }, ref) => {
     return (
         <div className="flex justify-center flex-1">
             <textarea
@@ -45,14 +47,15 @@ const NonEditableTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>
                     "ring-offset-background",
                     "placeholder:text-muted-foreground",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    "hover:ring-2 hover:ring-offset-2 hover:ring-gray-400",
-                    "disabled:cursor-not-allowed opacity-50",
+                    !disabled && "hover:ring-2 hover:ring-offset-2 hover:ring-gray-400",
+                    "disabled:cursor-not-allowed disabled:opacity-50",
                     "resize-none transition",
                     "text-gray-900 dark:text-gray-100", // Dark mode text color
                     "dark:bg-gray-800", // Dark mode background color
                     className
                 )}
                 ref={ref}
+                disabled={disabled}
                 readOnly
                 {...props}
             />
