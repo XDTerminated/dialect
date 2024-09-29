@@ -76,9 +76,6 @@ const NightmodeButton = () => {
         <button
             onClick={toggleDarkMode}
             style={{
-                position: "fixed",
-                bottom: "5vh", // 5% of the viewport height
-                right: "5vw", // 5% of the viewport width
                 padding: "1rem", // Responsive padding
                 fontSize: "2.5rem", // Responsive font size
                 fontWeight: "normal",

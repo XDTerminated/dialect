@@ -22,7 +22,7 @@ const TranslatorBoxes = () => {
     };
 
     return (
-        <div className="p-4 flex flex-col justify-center items-start min-h-screen space-y-4"> {/* Changed space-y-0 to space-y-4 for 16px gap */}
+        <div className="p-4 flex flex-col justify-center items-start space-y-4 flex-[10_0_0%]"> {/* Changed space-y-0 to space-y-4 for 16px gap */}
             {/* Flex Row for Dropdowns */}
             <div className="flex space-x-4 flex-1 w-full"> {/* Added flex-1 and space-x-4 for 16px gap */}
                 {/* Dropdown for Editable Textarea */}
