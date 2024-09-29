@@ -7,13 +7,13 @@
 //     const [isDarkMode, setIsDarkMode] = useState(false);
 
 //     useEffect(() => {
-//         if (isDarkMode) {
-//             document.body.style.color = "#333333";
-//             document.body.style.backgroundColor = "#FFFFFF";
-//         } else {
-//             document.body.style.color = "#FFFFFF";
-//             document.body.style.backgroundColor = "#333333";
-//         }
+        // if (isDarkMode) {
+        //     document.body.style.color = "#333333";
+        //     document.body.style.backgroundColor = "#FFFFFF";
+        // } else {
+        //     document.body.style.color = "#FFFFFF";
+        // //     document.body.style.backgroundColor = "#333333";
+        // }
 //     }, [isDarkMode]);
 
 //     const toggleDarkMode = () => {
@@ -25,22 +25,23 @@
 //             onClick={toggleDarkMode}
 //             style={{
 //                 position: "fixed",
-//                 bottom: "20px", // Adjust this value for vertical spacing
-//                 right: "20px", // Adjust this value for horizontal spacing
-//                 padding: "15px",
-//                 fontSize: "50px",
+//                 bottom: "5vh", 
+//                 right: "5vw", 
+//                 padding: "1rem", 
+//                 fontSize: "2.5rem", 
 //                 fontWeight: "normal",
 //                 backgroundColor: isDarkMode ? "#6CB4EE" : "#FFD700",
 //                 color: isDarkMode ? "#333333" : "#FFFFFF",
-//                 border: "none", // Updated to 'none' for no border
-//                 borderRadius: "50px",
+//                 border: "none",
+//                 borderRadius: "50%",
 //                 cursor: "pointer",
-//                 width: "50px",
-//                 height: "50px",
+//                 width: "4rem", 
+//                 height: "4rem", 
 //                 display: "flex",
 //                 justifyContent: "center",
 //                 alignItems: "center",
-//                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Optional: adds shadow for better visibility
+//                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", 
+//                 transition: "background-color 0.3s, color 0.3s", 
 //             }}
 //         >
 //             {isDarkMode ? <BsMoonStarsFill /> : <MdOutlineWbSunny />}
@@ -60,11 +61,9 @@ const NightmodeButton = () => {
 
     useEffect(() => {
         if (isDarkMode) {
-            document.body.style.color = "#333333";
-            document.body.style.backgroundColor = "#FFFFFF";
+            document.documentElement.classList.add('dark');
         } else {
-            document.body.style.color = "#FFFFFF";
-            document.body.style.backgroundColor = "#333333";
+            document.documentElement.classList.remove('dark');
         }
     }, [isDarkMode]);
 
@@ -74,27 +73,17 @@ const NightmodeButton = () => {
 
     return (
         <button
-            onClick={toggleDarkMode}
-            style={{
-                position: "fixed",
-                bottom: "5vh", // 5% of the viewport height
-                right: "5vw", // 5% of the viewport width
-                padding: "1rem", // Responsive padding
-                fontSize: "2.5rem", // Responsive font size
-                fontWeight: "normal",
-                backgroundColor: isDarkMode ? "#6CB4EE" : "#FFD700",
-                color: isDarkMode ? "#333333" : "#FFFFFF",
-                border: "none",
-                borderRadius: "50%",
-                cursor: "pointer",
-                width: "4rem", // Responsive width
-                height: "4rem", // Responsive height
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Optional: adds shadow for better visibility
-                transition: "background-color 0.3s, color 0.3s", // Smooth transitions
-            }}
+        onClick={toggleDarkMode}
+        className={`
+            fixed bottom-[5vh] right-[5vw] p-4
+            text-4xl font-normal
+            ${isDarkMode ? 'bg-[#6CB4EE] text-gray-800' : 'bg-[#FFD700] text-white'}
+            rounded-full cursor-pointer
+            w-16 h-16
+            flex justify-center items-center
+            shadow-lg
+            transition-colors duration-300
+        `}
         >
             {isDarkMode ? <BsMoonStarsFill /> : <MdOutlineWbSunny />}
         </button>
