@@ -100,7 +100,7 @@ import Dropdown from "./ui/Dropdown";
 import SwitchButton from "./ui/SwitchButton";
 import TranslateButton from "./ui/TranslateButton";
 import { fetchResponse } from "../api/fetchResponse"; // Import your API function
-import { Progress } from "./ui/progress";
+import { Progress } from "./ui/Progress";
 
 const TranslatorBoxes = () => {
     // State to hold the content of the editable Textarea
@@ -149,7 +149,7 @@ const TranslatorBoxes = () => {
                 const result = await fetchResponse(textareaValue);
 
                 // Extract the text content from the API response
-                const extractedText = result?.content?.[0]?.text || "No content available";
+                const extractedText = result?.["choices"]?.[0]?.["message"]?.["content"] || "No content available";
 
                 // Log the extracted text for debugging
                 console.log(extractedText);
