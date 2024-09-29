@@ -120,9 +120,9 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
   };
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
+    <div className="dropdown flex-[10_0_0%]" ref={dropdownRef}>
       <button
-        className="dropdown-button"
+        className="h-full dropdown-button"
         onClick={toggleDropdown}
         aria-haspopup="true"
         aria-expanded={isOpen}

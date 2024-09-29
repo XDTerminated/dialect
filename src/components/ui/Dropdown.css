@@ -13,6 +13,7 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    width: 100%;
   }
   
   .dropdown-button:focus {
@@ -30,7 +31,7 @@
   .dropdown-content {
     position: absolute;
     background-color: white;
-    min-width: 200px;
+    width: 100%;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     margin-top: 8px;
