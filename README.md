@@ -29,7 +29,7 @@ Ensure you have reviewed the [Rules & FAQ](https://hackmidwest.com/#faq)
 ## What does your app do?
 **
 
-<br /><br />
+<br />Our app is a universal translator platform designed to break down language barriers, whether between generations, regions, or even online communities. It’s not just about translating between traditional languages, but also about capturing dialects, slang, and unique subcultural expressions. In today’s fast-paced digital world, words and their meanings evolve rapidly—emojis, shorthand, and new terms constantly emerge. Our platform aims to ensure that everyone can understand and engage with these evolving forms of communication, no matter where they’re from or what generation they belong to. Whether it's translating slang from social media or decoding business jargon, our app allows users to bridge communication gaps seamlessly. In short, we give people the tools to understand new perspectives, stay connected, and foster better communication across different cultures, generations, and communities.<br />
 
 
 ## What challenges are you building for? SELECT ALL THAT APPLY
