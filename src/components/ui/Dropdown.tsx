@@ -336,8 +336,10 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect, disabled })
                                                 e.stopPropagation();
                                                 setDropdownItems((prevItems) => prevItems.filter((i) => i.label !== item.label));
                                                 if (selectedLabel === item.label) {
+                                                    console.log("Ljflajsdlfjladsjf")
                                                     setSelectedLabel(label);
                                                     onSelect(label);
+                                                    return ;
                                                 }
                                                 if (editingDescriptionIndex === index) {
                                                     setEditingDescriptionIndex(null);
