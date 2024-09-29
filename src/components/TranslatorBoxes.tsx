@@ -8,22 +8,6 @@ import { Progress } from "./ui/Progress";
 import { FaTrash, FaRegCopy, FaRegClipboard } from "react-icons/fa"; // Import icons
 
 const TranslatorBoxes = () => {
-    // State for dropdown items
-    const [dropdownItems1, setDropdownItems1] = useState([
-        { label: "Option 1" },
-        { label: "Option 2" },
-        { label: "Option 3" }
-    ]);
-    const [dropdownItems2, setDropdownItems2] = useState([
-        { label: "Option A" },
-        { label: "Option B" },
-        { label: "Option C" }
-    ]);
-
-    // State for selected values
-    const [selectedValue1, setSelectedValue1] = useState("Select Option");
-    const [selectedValue2, setSelectedValue2] = useState("Select Option");
-
     // State to hold the content of the editable Textarea
     const [textareaValue, setTextareaValue] = useState("");
     // State to hold the content of the non-editable Textarea (translation result)
@@ -34,26 +18,16 @@ const TranslatorBoxes = () => {
     const [progressValue, setProgressValue] = useState(0);
     const [isFlashing, setIsFlashing] = useState(false);
 
-    // Handle Switching Selected Components
-    const handleSwitch = () => {
-        // Swap dropdown items
-        setDropdownItems1(prev => dropdownItems2);
-        setDropdownItems2(prev => prev);
-        
-        // Swap selected values
-        const tempValue = selectedValue1;
-        setSelectedValue1(selectedValue2);
-        setSelectedValue2(tempValue);
-    };
+    // Sample dropdown items for demonstration
+    const dropdownItems1 = [{ label: "Option 1" }, { label: "Option 2" }, { label: "Option 3" }];
+    const dropdownItems2 = [{ label: "Option A" }, { label: "Option B" }, { label: "Option C" }];
 
     // Handler for dropdown selection
-    const handleSelect1 = (label: string) => {
-        setSelectedValue1(label);
+    const handleSelect1 = (label) => {
         console.log("Selected from Dropdown 1:", label);
     };
 
-    const handleSelect2 = (label: string) => {
-        setSelectedValue2(label);
+    const handleSelect2 = (label) => {
         console.log("Selected from Dropdown 2:", label);
     };
 
@@ -132,14 +106,14 @@ const TranslatorBoxes = () => {
             {/* Flex Row for Dropdowns */}
             <div className="flex space-x-4 flex-1 w-full">
                 <Dropdown
-                    label={selectedValue1}
+                    label="Select Option"
                     items={dropdownItems1}
                     onSelect={handleSelect1}
                     disabled={isTranslating} // Disable during translation
                 />
-                <SwitchButton onClick={handleSwitch} disabled={isTranslating} /> {/* Disable switch button */}
+                <SwitchButton disabled={isTranslating} /> {/* Disable switch button */}
                 <Dropdown
-                    label={selectedValue2}
+                    label="Select Option"
                     items={dropdownItems2}
                     onSelect={handleSelect2}
                     disabled={isTranslating} // Disable during translation

@@ -1,9 +1,9 @@
+// src/components/Dropdown.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import './Dropdown.css';
+import './Dropdown.css'; // Import the CSS for styling
 
 interface DropdownItem {
   label: string;
-  description?: string;
 }
 
 interface DropdownProps {
@@ -14,30 +14,16 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [dropdownItems, setDropdownItems] = useState<DropdownItem[]>(items);
-  const [activeIndex, setActiveIndex] = useState<number>(-1);
-  const [selectedLabel, setSelectedLabel] = useState<string>(label);
-  const [editingDescriptionIndex, setEditingDescriptionIndex] = useState<number | null>(null);
-  const [descriptionInput, setDescriptionInput] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>(''); // Search term state for filtering
+  const [dropdownItems, setDropdownItems] = useState<DropdownItem[]>(items); // Manage dropdown items in state
+  const [activeIndex, setActiveIndex] = useState<number>(-1); // Track active item index
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Update dropdown items when the items prop changes
-  useEffect(() => {
-    setDropdownItems(items);
-  }, [items]);
-
-  // Update selectedLabel when label prop changes
-  useEffect(() => {
-    setSelectedLabel(label);
-  }, [label]);
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
     setSearchTerm(''); // Clear search term when toggling the dropdown
     setActiveIndex(-1); // Reset active index when closing or opening the dropdown
-    setEditingDescriptionIndex(null); // Close description input if open
   };
 
   // Close dropdown when clicking outside
@@ -47,7 +33,6 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
       !dropdownRef.current.contains(event.target as Node)
     ) {
       setIsOpen(false);
-      setEditingDescriptionIndex(null); // Close description input if open
     }
   };
 
@@ -55,15 +40,22 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       setIsOpen(false);
-      setEditingDescriptionIndex(null); // Close description input if open
     }
   };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   // Filter items based on search term
   const filteredItems = dropdownItems.filter((item) =>
     item.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
 
   // Handle keyboard navigation for arrow keys and Enter
   const handleInputKeyDown = (
@@ -80,14 +72,10 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
         prevIndex > 0 ? prevIndex - 1 : filteredItems.length - 1
       );
     } else if (event.key === 'Enter') {
-      if (editingDescriptionIndex !== null) {
-        // Save description if Enter is pressed while editing
-        saveDescription(editingDescriptionIndex);
-      } else if (activeIndex >= 0) {
+      if (activeIndex >= 0) {
         // If an item is selected via keyboard
         const selectedItem = filteredItems[activeIndex];
         onSelect(selectedItem.label);
-        setSelectedLabel(selectedItem.label); // Update selected label
         // Move the selected item to the top of the list
         setDropdownItems((prevItems) => {
           const itemsWithoutSelected = prevItems.filter(
@@ -107,7 +95,6 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
         if (existingItem) {
           // Select the existing item and move it to the top
           onSelect(existingItem.label);
-          setSelectedLabel(existingItem.label); // Update selected label
           setDropdownItems((prevItems) => {
             const itemsWithoutSelected = prevItems.filter(
               (item) => item.label.toLowerCase() !== searchTerm.toLowerCase()
@@ -124,24 +111,12 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
           };
           setDropdownItems((prevItems) => [newItem, ...prevItems]);
           onSelect(searchTerm);
-          setSelectedLabel(searchTerm); // Update selected label
           setIsOpen(false);
           setSearchTerm('');
           setActiveIndex(-1);
         }
       }
     }
-  };
-
-  // Function to save the description
-  const saveDescription = (index: number) => {
-    // Update the item's description
-    setDropdownItems((prevItems) =>
-      prevItems.map((itm, idx) =>
-        idx === index ? { ...itm, description: descriptionInput } : itm
-      )
-    );
-    setEditingDescriptionIndex(null);
   };
 
   return (
@@ -152,7 +127,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        {selectedLabel} <span className="arrow">{isOpen ? '▲' : '▼'}</span>
+        {label} <span className="arrow">{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {isOpen && (
@@ -171,99 +146,40 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
             autoFocus
           />
 
-          <ul className="dropdown-menu" role="menu">
+          <ul
+            className="dropdown-menu"
+            role="menu"
+          >
             {filteredItems.length > 0 ? (
               filteredItems.map((item, index) => (
                 <li
                   key={index}
                   role="none"
-                  className={`dropdown-item-container ${
-                    activeIndex === index ? 'active' : ''
-                  }`}
+                  className={activeIndex === index ? 'active' : ''}
+                  style={{
+                    backgroundColor:
+                      activeIndex === index ? '#ddd' : 'transparent',
+                  }}
                 >
-                  <div className="dropdown-item-wrapper">
-                    <button
-                      className="add-description"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering the item selection
-                        setEditingDescriptionIndex(
-                          editingDescriptionIndex === index ? null : index
+                  <button
+                    className="dropdown-item"
+                    role="menuitem"
+                    onClick={() => {
+                      onSelect(item.label);
+                      // Move the selected item to the top of the list
+                      setDropdownItems((prevItems) => {
+                        const itemsWithoutSelected = prevItems.filter(
+                          (i) => i.label !== item.label
                         );
-                        setDescriptionInput(item.description || '');
-                      }}
-                      aria-label={`Add description to ${item.label}`}
-                    >
-                      +
-                    </button>
-
-                    <button
-                      className="dropdown-item"
-                      role="menuitem"
-                      onClick={() => {
-                        onSelect(item.label);
-                        setSelectedLabel(item.label); // Update selected label
-                        // Move the selected item to the top of the list
-                        setDropdownItems((prevItems) => {
-                          const itemsWithoutSelected = prevItems.filter(
-                            (i) => i.label !== item.label
-                          );
-                          return [item, ...itemsWithoutSelected];
-                        });
-                        setIsOpen(false);
-                        setSearchTerm('');
-                        setActiveIndex(-1);
-                      }}
-                    >
-                      {item.label}
-                    </button>
-                    <button
-                      className="remove-item"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering the item selection
-                        // Remove item from dropdownItems
-                        setDropdownItems((prevItems) =>
-                          prevItems.filter((i) => i.label !== item.label)
-                        );
-                        
-                        // If the removed item is the selected label, reset it
-                        if (selectedLabel === item.label) {
-                          setSelectedLabel(label);
-                          onSelect(label);
-                        }
-                        // Close description input if open
-                        if (editingDescriptionIndex === index) {
-                          setEditingDescriptionIndex(null);
-                        }
-                      }}
-                      aria-label={`Remove ${item.label}`}
-                    >
-                      ×
-                    </button>
-                  </div>
-                  {/* Description Input Field */}
-                  {editingDescriptionIndex === index && (
-                    <div className="description-input-container">
-                      <input
-                        type="text"
-                        className="description-input"
-                        placeholder="Enter description..."
-                        value={descriptionInput}
-                        onChange={(e) => setDescriptionInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            saveDescription(index);
-                          }
-                        }}
-                        autoFocus
-                      />
-                      <button
-                        className="save-description"
-                        onClick={() => saveDescription(index)}
-                      >
-                        Save
-                      </button>
-                    </div>
-                  )}
+                        return [item, ...itemsWithoutSelected];
+                      });
+                      setIsOpen(false);
+                      setSearchTerm('');
+                      setActiveIndex(-1);
+                    }}
+                  >
+                    {item.label}
+                  </button>
                 </li>
               ))
             ) : (
