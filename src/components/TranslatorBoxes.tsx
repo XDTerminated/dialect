@@ -7,16 +7,29 @@ import { fetchResponse } from "../api/fetchResponse";
 import { Progress } from "./ui/Progress";
 import { FaTrash, FaRegCopy, FaRegClipboard } from "react-icons/fa";
 
+interface DropdownItem {
+    label: string;
+    description: string;
+}
+
 const TranslatorBoxes = () => {
     // State for dropdown items
-    const [dropdownItems1, setDropdownItems1] = useState([{ label: "English" }, { label: "Shakespearean" }, { label: "Gen Alpha" }]);
-    const [dropdownItems2, setDropdownItems2] = useState([{ label: "English" }, { label: "Shakespearean" }, { label: "Gen Alpha" }]);
+    const [dropdownItems1, setDropdownItems1] = useState<DropdownItem[]>([
+        { label: "English", description: "" },
+        { label: "Shakespearean", description: "" },
+        { label: "Gen Alpha", description: "" }
+    ]);
+    const [dropdownItems2, setDropdownItems2] = useState<DropdownItem[]>([
+        { label: "English", description: "" },
+        { label: "Shakespearean", description: "" },
+        { label: "Gen Alpha", description: "" }
+    ]);
 
     // State for selected values
     const [selectedValue1, setSelectedValue1] = useState("English");
     const [selectedValue2, setSelectedValue2] = useState("Shakespearean");
-    const [selectedDescription1, setSelectedDescription1] = useState(""); // New state for description
-    const [selectedDescription2, setSelectedDescription2] = useState(""); // New state for description
+    const [selectedDescription1, setSelectedDescription1] = useState("");
+    const [selectedDescription2, setSelectedDescription2] = useState("");
 
     // State to hold the content of the editable Textarea
     const [textareaValue, setTextareaValue] = useState("");
@@ -31,30 +44,51 @@ const TranslatorBoxes = () => {
     // Handle Switching Selected Components
     const handleSwitch = () => {
         // Swap dropdown items
-        const tempItems = dropdownItems1;
-        setDropdownItems1(dropdownItems2);
-        setDropdownItems2(tempItems);
+        setDropdownItems1(prevItems1 => {
+            setDropdownItems2(prevItems2 => {
+                return [...prevItems1];
+            });
+            return [...dropdownItems2];
+        });
 
         // Swap selected values
         const tempValue = selectedValue1;
         setSelectedValue1(selectedValue2);
         setSelectedValue2(tempValue);
+
+        // Swap descriptions
+        const tempDescription = selectedDescription1;
+        setSelectedDescription1(selectedDescription2);
+        setSelectedDescription2(tempDescription);
     };
 
     // Handler for dropdown selection
-    // Update handleSelect1 to accept description
     const handleSelect1 = (label: string, description?: string) => {
         setSelectedValue1(label);
-        setSelectedDescription1(description || " ");
-        console.log("Selected from Dropdown 1:", label, "Description:", selectedDescription1);
-        // You can now use the description as needed
+        setSelectedDescription1(description || "");
+        setDropdownItems1(prevItems => {
+            const updatedItems = prevItems.map(item => 
+                item.label === label ? { ...item, description: description || "" } : item
+            );
+            if (!prevItems.some(item => item.label === label)) {
+                updatedItems.unshift({ label, description: description || "" });
+            }
+            return updatedItems;
+        });
     };
 
     const handleSelect2 = (label: string, description?: string) => {
         setSelectedValue2(label);
-        setSelectedDescription2(description || " ");
-        console.log("Selected from Dropdown 2:", label, "Description:", selectedDescription2);
-        // You can now use the description as needed
+        setSelectedDescription2(description || "");
+        setDropdownItems2(prevItems => {
+            const updatedItems = prevItems.map(item => 
+                item.label === label ? { ...item, description: description || "" } : item
+            );
+            if (!prevItems.some(item => item.label === label)) {
+                updatedItems.unshift({ label, description: description || "" });
+            }
+            return updatedItems;
+        });
     };
 
     // Function to count the words in the textarea
@@ -130,15 +164,30 @@ const TranslatorBoxes = () => {
             <div className="flex space-x-4 flex-[20_0_0%] w-full">
                 {/* Editable Textarea (Left Box) */}
                 <div className="relative flex-grow flex">
-                    <Textarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none" placeholder="Type here..." value={textareaValue} onChange={(e) => setTextareaValue(e.target.value)} disabled={isTranslating} />
-                    <button onClick={handleClearText} className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700 transition" style={{ fontSize: "1.5rem" }}>
+                    <Textarea
+                        className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none"
+                        placeholder="Type here..."
+                        value={textareaValue}
+                        onChange={(e) => setTextareaValue(e.target.value)}
+                        disabled={isTranslating}
+                    />
+                    <button
+                        onClick={handleClearText}
+                        className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700 transition"
+                        style={{ fontSize: "1.5rem" }}
+                    >
                         <FaTrash />
                     </button>
                 </div>
 
                 {/* Non-editable Textarea (Right Box) */}
                 <div className="relative flex-grow flex">
-                    <NonEditableTextarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none" placeholder="Translation will appear here..." value={translationValue} readOnly />
+                    <NonEditableTextarea
+                        className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none"
+                        placeholder="Translation will appear here..."
+                        value={translationValue}
+                        readOnly
+                    />
                     <div className="absolute bottom-4 right-4 flex space-x-2 text-gray-500 hover:text-gray-700">
                         <FaRegClipboard
                             style={{
@@ -147,7 +196,11 @@ const TranslatorBoxes = () => {
                                 transition: "opacity 0.5s ease",
                             }}
                         />
-                        <button onClick={handleCopyText} className="text-gray-500 hover:text-gray-700 transition" style={{ fontSize: "1.5rem" }}>
+                        <button
+                            onClick={handleCopyText}
+                            className="text-gray-500 hover:text-gray-700 transition"
+                            style={{ fontSize: "1.5rem" }}
+                        >
                             <FaRegCopy />
                         </button>
                     </div>
@@ -156,7 +209,7 @@ const TranslatorBoxes = () => {
 
             {/* Translate Button */}
             <div className="flex space-x-4 flex-1 w-full">
-                <TranslateButton onClick={handleTranslateClick} disabled={isTranslating} />
+                <TranslateButton onClick={handleTranslateClick} disabled={isTranslating} isTranslating={isTranslating}/>
             </div>
         </div>
     );
