@@ -1,10 +1,9 @@
-// src/components/Dropdown.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import './Dropdown.css'; // Import the CSS for styling
+import './Dropdown.css';
 
 interface DropdownItem {
   label: string;
-  description?: string; // Optional description field
+  description?: string;
 }
 
 interface DropdownProps {
@@ -15,13 +14,18 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>(''); // Search term state for filtering
-  const [dropdownItems, setDropdownItems] = useState<DropdownItem[]>(items); // Manage dropdown items in state
-  const [activeIndex, setActiveIndex] = useState<number>(-1); // Track active item index
-  const [selectedLabel, setSelectedLabel] = useState<string>(label); // State for selected label
-  const [editingDescriptionIndex, setEditingDescriptionIndex] = useState<number | null>(null); // Index of the item being edited
-  const [descriptionInput, setDescriptionInput] = useState<string>(''); // Description input value
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [dropdownItems, setDropdownItems] = useState<DropdownItem[]>(items);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+  const [selectedLabel, setSelectedLabel] = useState<string>(label);
+  const [editingDescriptionIndex, setEditingDescriptionIndex] = useState<number | null>(null);
+  const [descriptionInput, setDescriptionInput] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Update dropdown items when the items prop changes
+  useEffect(() => {
+    setDropdownItems(items);
+  }, [items]);
 
   // Update selectedLabel when label prop changes
   useEffect(() => {
@@ -55,19 +59,11 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
   // Filter items based on search term
   const filteredItems = dropdownItems.filter((item) =>
     item.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
 
   // Handle keyboard navigation for arrow keys and Enter
   const handleInputKeyDown = (
@@ -228,6 +224,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, onSelect }) => {
                         setDropdownItems((prevItems) =>
                           prevItems.filter((i) => i.label !== item.label)
                         );
+                        
                         // If the removed item is the selected label, reset it
                         if (selectedLabel === item.label) {
                           setSelectedLabel(label);

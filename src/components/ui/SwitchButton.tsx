@@ -2,10 +2,15 @@
 import React from 'react';
 import { GoArrowSwitch } from 'react-icons/go';
 
-const SwitchButton: React.FC = () => {
+interface SwitchButtonProps {
+  onClick: () => void
+}
+
+const SwitchButton: React.FC<SwitchButtonProps> = ({ onClick }) => {
   return (
     <button
-      className="
+        onClick={onClick}
+        className="
         flex-1 
         flex 
         items-center 
