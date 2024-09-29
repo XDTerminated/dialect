@@ -2,9 +2,14 @@
 import React from 'react';
 import { GoArrowSwitch } from 'react-icons/go';
 
-const SwitchButton: React.FC = () => {
+interface SwitchButtonProps {
+  onClick: () => void;
+}
+
+const SwitchButton: React.FC<SwitchButtonProps> = ({ onClick }) => {
   return (
     <button
+      onClick={onClick}
       style={{ color: 'white' }} // Inline style to set text color to white
       className="
         flex-1 
