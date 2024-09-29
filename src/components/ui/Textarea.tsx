@@ -7,7 +7,7 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
     return (
-        <div className="flex justify-center items-start flex-1">
+        <div className="flex justify-center flex-1">
             <textarea
                 className={cn(
                     "p-4 w-full h-full rounded-md border border-input",
@@ -37,7 +37,7 @@ Textarea.displayName = "Textarea";
 // Non-editable Textarea component
 const NonEditableTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
     return (
-        <div className="flex justify-center items-start flex-1">
+        <div className="flex justify-center flex-1">
             <textarea
                 className={cn(
                     "p-4 w-full h-full rounded-md border border-input",
