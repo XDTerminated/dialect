@@ -162,7 +162,7 @@
 
 /* Save Description Button */
 .save-description {
-    background-color: #e6f7ff; /* Very light blue interior */
+    background-color: #27ae60; /* Very light blue interior */
     outline: 2px solid #2ecc71; /* Previous infill color as outline */
     color: white;
     border: none;
@@ -175,7 +175,7 @@
 
 .save-description:hover,
 .save-description:focus {
-    background-color: #27ae60;
+    background-color: #e6f7ff;
     outline: none;
 }
 

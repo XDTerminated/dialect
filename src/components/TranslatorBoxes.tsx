@@ -6,6 +6,8 @@ import TranslateButton from "./ui/TranslateButton";
 import { fetchResponse } from "../api/fetchResponse";
 import { Progress } from "./ui/Progress";
 import { FaTrash, FaRegCopy, FaRegClipboard } from "react-icons/fa";
+import TrashButton from "./ui/TrashButton";
+import CopyButton from "./ui/CopyButton";
 
 interface DropdownItem {
     label: string;
@@ -98,9 +100,7 @@ const TranslatorBoxes = () => {
 
     // Handler for Translate button click
     const handleTranslateClick = async () => {
-        const wordCount = countWords(textareaValue);
-
-        if (wordCount > 5) {
+        if (textareaValue.length > 0) {
             try {
                 setIsTranslating(true);
                 setProgressValue(0);
@@ -126,8 +126,9 @@ const TranslatorBoxes = () => {
                 setTranslationValue("An error occurred during translation.");
                 setIsTranslating(false);
             }
-        } else {
-            setTranslationValue("Please enter more than 5 words for translation.");
+        }
+        else {
+            setTranslationValue("");
         }
     };
 
@@ -164,30 +165,13 @@ const TranslatorBoxes = () => {
             <div className="flex space-x-4 flex-[20_0_0%] w-full">
                 {/* Editable Textarea (Left Box) */}
                 <div className="relative flex-grow flex">
-                    <Textarea
-                        className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none"
-                        placeholder="Type here..."
-                        value={textareaValue}
-                        onChange={(e) => setTextareaValue(e.target.value)}
-                        disabled={isTranslating}
-                    />
-                    <button
-                        onClick={handleClearText}
-                        className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700 transition"
-                        style={{ fontSize: "1.5rem" }}
-                    >
-                        <FaTrash />
-                    </button>
+                    <Textarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none" placeholder="Type here..." value={textareaValue} onChange={(e) => setTextareaValue(e.target.value)} disabled={isTranslating} />
+                    <TrashButton onClick={handleClearText} disabled={isTranslating}/>
                 </div>
 
                 {/* Non-editable Textarea (Right Box) */}
                 <div className="relative flex-grow flex">
-                    <NonEditableTextarea
-                        className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none"
-                        placeholder="Translation will appear here..."
-                        value={translationValue}
-                        readOnly
-                    />
+                    <NonEditableTextarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none" placeholder="Translation will appear here..." disabled={isTranslating} value={translationValue} readOnly />
                     <div className="absolute bottom-4 right-4 flex space-x-2 text-gray-500 hover:text-gray-700">
                         <FaRegClipboard
                             style={{
@@ -196,13 +180,9 @@ const TranslatorBoxes = () => {
                                 transition: "opacity 0.5s ease",
                             }}
                         />
-                        <button
-                            onClick={handleCopyText}
-                            className="text-gray-500 hover:text-gray-700 transition"
-                            style={{ fontSize: "1.5rem" }}
-                        >
-                            <FaRegCopy />
-                        </button>
+
+
+                        <CopyButton onClick={handleCopyText} disabled={isTranslating}/>
                     </div>
                 </div>
             </div>
