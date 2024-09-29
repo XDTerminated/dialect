@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Progress } from "@/components/ui/Progress";
-import { fetchResponse } from "@/api/fetchResponse"; // Assuming you have this function for fetching the translation
+import { fetchResponse } from "@/api/fetchResponse";
+import TranslateButton from "@/components/ui/TranslateButton";
 
 const TranslatorApp = () => {
     const [text, setText] = useState("");
@@ -8,37 +9,54 @@ const TranslatorApp = () => {
     const [progressValue, setProgressValue] = useState(0);
     const [translatedText, setTranslatedText] = useState("");
 
-    const handleTranslate = async () => {
+    useEffect(() => {
+        console.log("isTranslating state changed:", isTranslating);
+    }, [isTranslating]);
+
+    const handleTranslate = useCallback(async () => {
+        console.log("handleTranslate called");
+        if (isTranslating) {
+            console.log("Translation already in progress, returning early");
+            return;
+        }
+
         setIsTranslating(true);
         setProgressValue(0);
+        console.log("Starting translation, isTranslating set to true");
 
-        // Simulate progress over time
         const progressInterval = setInterval(() => {
-            setProgressValue((prev) => Math.min(prev + 10, 100));
-        }, 100); // Simulate progress every 100ms
+            setProgressValue((prev) => {
+                const newValue = Math.min(prev + 10, 90);
+                console.log("Progress updated:", newValue);
+                return newValue;
+            });
+        }, 100);
 
         try {
-            // Call the API to get the translation
+            console.log("Fetching translation");
             const response = await fetchResponse(text);
 
             if (response.success) {
-                setTranslatedText(response.data); // Update with the translated text
+                console.log("Translation successful");
+                setTranslatedText(response.data);
             } else {
-                // Handle error
+                console.log("Translation failed");
                 setTranslatedText("Error translating text.");
             }
         } catch (error) {
-            console.error(error);
+            console.error("Translation error:", error);
             setTranslatedText("Error translating text.");
         } finally {
-            // Clear the progress interval and finish translation
             clearInterval(progressInterval);
-            setProgressValue(100); // Set the progress to 100% when done
+            setProgressValue(100);
+            console.log("Translation process completed, progress set to 100");
+
             setTimeout(() => {
-                setIsTranslating(false); // Hide the progress bar and re-enable the interface
-            }, 500); // Allow a small delay to show the final progress
+                setIsTranslating(false);
+                console.log("isTranslating set back to false");
+            }, 500);
         }
-    };
+    }, [text, isTranslating]);
 
     return (
         <div className="p-4">
@@ -48,27 +66,19 @@ const TranslatorApp = () => {
                 </div>
             )}
 
-            <textarea
-                className="w-full h-32 p-2 border"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                disabled={isTranslating} // Disable input while translating
-                placeholder="Enter text to translate..."
-            />
+            <textarea className="w-full h-32 p-2 border" value={text} onChange={(e) => setText(e.target.value)} disabled={isTranslating} placeholder="Enter text to translate..." />
 
-            <button
-                className="mt-2 p-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-                onClick={handleTranslate}
-                disabled={isTranslating} // Disable button while translating
-            >
-                {isTranslating ? "Translating..." : "Translate"}
-            </button>
+            <TranslateButton onClick={handleTranslate} disabled={isTranslating} isTranslating={isTranslating} />
 
             {translatedText && (
                 <div className="mt-4 p-2 bg-gray-100 border">
                     <strong>Translated Text:</strong> {translatedText}
                 </div>
             )}
+
+            <div className="mt-4">
+                <strong>Debug Info:</strong> isTranslating: {isTranslating.toString()}, Progress: {progressValue}
+            </div>
         </div>
     );
 };
