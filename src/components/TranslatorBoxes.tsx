@@ -15,6 +15,8 @@ const TranslatorBoxes = () => {
     // State for selected values
     const [selectedValue1, setSelectedValue1] = useState("English");
     const [selectedValue2, setSelectedValue2] = useState("Shakespearean");
+    const [selectedDescription1, setSelectedDescription1] = useState(""); // New state for description
+    const [selectedDescription2, setSelectedDescription2] = useState(""); // New state for description
 
     // State to hold the content of the editable Textarea
     const [textareaValue, setTextareaValue] = useState("");
@@ -40,18 +42,23 @@ const TranslatorBoxes = () => {
     };
 
     // Handler for dropdown selection
-    const handleSelect1 = (label) => {
+    // Update handleSelect1 to accept description
+    const handleSelect1 = (label: string, description?: string) => {
         setSelectedValue1(label);
-        console.log("Selected from Dropdown 1:", label);
+        setSelectedDescription1(description || " ");
+        console.log("Selected from Dropdown 1:", label, "Description:", selectedDescription1);
+        // You can now use the description as needed
     };
 
-    const handleSelect2 = (label) => {
+    const handleSelect2 = (label: string, description?: string) => {
         setSelectedValue2(label);
-        console.log("Selected from Dropdown 2:", label);
+        setSelectedDescription2(description || " ");
+        console.log("Selected from Dropdown 2:", label, "Description:", selectedDescription2);
+        // You can now use the description as needed
     };
 
     // Function to count the words in the textarea
-    const countWords = (text) => {
+    const countWords = (text: string) => {
         return text.trim().split(/\s+/).length;
     };
 
@@ -68,7 +75,7 @@ const TranslatorBoxes = () => {
                     setProgressValue((prev) => Math.min(prev + 10, 100));
                 }, 100);
 
-                const result = await fetchResponse(textareaValue, selectedValue1, selectedValue2);
+                const result = await fetchResponse(textareaValue, selectedValue1, selectedValue2, selectedDescription1, selectedDescription2);
                 const extractedText = result?.["choices"]?.[0]?.["message"]?.["content"] || "No content available";
 
                 console.log(extractedText);
