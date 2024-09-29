@@ -3,6 +3,7 @@ import { NonEditableTextarea, Textarea } from "./ui/Textarea";
 import Dropdown from "./ui/Dropdown";
 import SwitchButton from "./ui/SwitchButton";
 import TranslateButton from "./ui/TranslateButton";
+import { fetchResponse } from "../api/fetchResponse"; // Import your API function
 
 const TranslatorBoxes = () => {
     // State to hold the content of the editable Textarea
@@ -23,20 +24,44 @@ const TranslatorBoxes = () => {
         console.log("Selected from Dropdown 2:", label);
     };
 
+    // Function to count the words in the textarea
+    const countWords = (text) => {
+        return text.trim().split(/\s+/).length;
+    };
+
     // Handler for Translate button click
-    const handleTranslateClick = () => {
-        // Set the non-editable textarea's value to whatever is in the editable textarea
-        setTranslationValue(textareaValue);
+    // Handler for Translate button click
+    const handleTranslateClick = async () => {
+        const wordCount = countWords(textareaValue);
+
+        if (wordCount > 5) {
+            try {
+                // Call the API with the textarea content
+                const result = await fetchResponse(textareaValue);
+
+                // Extract the text content from the API response
+                const extractedText = result?.content?.[0]?.text || "No content available";
+
+                // Log the extracted text for debugging
+                console.log(extractedText);
+
+                // Set the extracted text in the non-editable textarea
+                setTranslationValue(extractedText);
+            } catch (error) {
+                console.error("Error:", error);
+                setTranslationValue("An error occurred during translation.");
+            }
+        } else {
+            setTranslationValue("Please enter more than 5 words for translation.");
+        }
     };
 
     return (
         <div className="p-4 flex flex-col justify-center items-start min-h-screen space-y-4">
             {/* Flex Row for Dropdowns */}
             <div className="flex space-x-4 flex-1 w-full">
-                {/* Dropdown for Editable Textarea */}
                 <Dropdown label="Select Option" items={dropdownItems1} onSelect={handleSelect1} />
                 <SwitchButton />
-                {/* Dropdown for Non-Editable Textarea */}
                 <Dropdown label="Select Option" items={dropdownItems2} onSelect={handleSelect2} />
             </div>
 
