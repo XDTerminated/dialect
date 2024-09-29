@@ -1,14 +1,16 @@
-// src/api/fetchResponse.ts (Create a new file in your project)
+// src/api/fetchResponse.ts
 
 export interface ApiResponse {
-    // Define the structure of the response based on what your Django API returns
-    // For example:
+    content: any;
     success: boolean;
-    data?: any; // Adjust based on the actual data structure
-    error?: string; // Optionally include an error field
+    data?: any;
+    error?: string;
 }
 
-export const fetchResponse = async (prompt: string): Promise<ApiResponse> => {
+export const fetchResponse = async (text: string): Promise<ApiResponse> => {
+    // Construct the prompt with the custom format
+    const prompt = `Translate the following  text  into how donal trump would say it (I only want the translated text and nothing else.): "${text}"`;
+
     const response = await fetch(`http://127.0.0.1:8000/bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`);
 
     if (!response.ok) {
