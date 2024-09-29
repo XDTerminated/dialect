@@ -3,26 +3,18 @@ import { NonEditableTextarea, Textarea } from "./ui/Textarea";
 import Dropdown from "./ui/Dropdown";
 import SwitchButton from "./ui/SwitchButton";
 import TranslateButton from "./ui/TranslateButton";
-import { fetchResponse } from "../api/fetchResponse"; // Import your API function
+import { fetchResponse } from "../api/fetchResponse";
 import { Progress } from "./ui/Progress";
-import { FaTrash, FaRegCopy, FaRegClipboard } from "react-icons/fa"; // Import icons
+import { FaTrash, FaRegCopy, FaRegClipboard } from "react-icons/fa";
 
 const TranslatorBoxes = () => {
     // State for dropdown items
-    const [dropdownItems1, setDropdownItems1] = useState([
-        { label: "Option 1" },
-        { label: "Option 2" },
-        { label: "Option 3" }
-    ]);
-    const [dropdownItems2, setDropdownItems2] = useState([
-        { label: "Option A" },
-        { label: "Option B" },
-        { label: "Option C" }
-    ]);
+    const [dropdownItems1, setDropdownItems1] = useState([{ label: "English" }, { label: "Shakespearean" }, { label: "Gen Alpha" }]);
+    const [dropdownItems2, setDropdownItems2] = useState([{ label: "English" }, { label: "Shakespearean" }, { label: "Gen Alpha" }]);
 
     // State for selected values
-    const [selectedValue1, setSelectedValue1] = useState("Select Option");
-    const [selectedValue2, setSelectedValue2] = useState("Select Option");
+    const [selectedValue1, setSelectedValue1] = useState("English");
+    const [selectedValue2, setSelectedValue2] = useState("Shakespearean");
 
     // State to hold the content of the editable Textarea
     const [textareaValue, setTextareaValue] = useState("");
@@ -37,9 +29,10 @@ const TranslatorBoxes = () => {
     // Handle Switching Selected Components
     const handleSwitch = () => {
         // Swap dropdown items
-        setDropdownItems1(prev => dropdownItems2);
-        setDropdownItems2(prev => prev);
-        
+        const tempItems = dropdownItems1;
+        setDropdownItems1(dropdownItems2);
+        setDropdownItems2(tempItems);
+
         // Swap selected values
         const tempValue = selectedValue1;
         setSelectedValue1(selectedValue2);
@@ -47,12 +40,12 @@ const TranslatorBoxes = () => {
     };
 
     // Handler for dropdown selection
-    const handleSelect1 = (label: string) => {
+    const handleSelect1 = (label) => {
         setSelectedValue1(label);
         console.log("Selected from Dropdown 1:", label);
     };
 
-    const handleSelect2 = (label: string) => {
+    const handleSelect2 = (label) => {
         setSelectedValue2(label);
         console.log("Selected from Dropdown 2:", label);
     };
@@ -68,32 +61,22 @@ const TranslatorBoxes = () => {
 
         if (wordCount > 5) {
             try {
-                // Start translation and display progress bar
                 setIsTranslating(true);
-                setProgressValue(0); // Reset progress bar
+                setProgressValue(0);
 
-                // Simulate progress increase
                 const progressInterval = setInterval(() => {
                     setProgressValue((prev) => Math.min(prev + 10, 100));
-                }, 100); // Increase progress every 100ms
+                }, 100);
 
-                // Call the API with the textarea content
-                const result = await fetchResponse(textareaValue);
-
-                // Extract the text content from the API response
+                const result = await fetchResponse(textareaValue, selectedValue1, selectedValue2);
                 const extractedText = result?.["choices"]?.[0]?.["message"]?.["content"] || "No content available";
 
-                // Log the extracted text for debugging
                 console.log(extractedText);
-
-                // Set the extracted text in the non-editable textarea
                 setTranslationValue(extractedText);
 
-                // Complete the progress bar
                 clearInterval(progressInterval);
                 setProgressValue(100);
 
-                // Hide progress bar after a short delay
                 setTimeout(() => {
                     setIsTranslating(false);
                 }, 500);
@@ -131,62 +114,33 @@ const TranslatorBoxes = () => {
 
             {/* Flex Row for Dropdowns */}
             <div className="flex space-x-4 flex-1 w-full">
-                <Dropdown
-                    label={selectedValue1}
-                    items={dropdownItems1}
-                    onSelect={handleSelect1}
-                    disabled={isTranslating} // Disable during translation
-                />
-                <SwitchButton onClick={handleSwitch} disabled={isTranslating} /> {/* Disable switch button */}
-                <Dropdown
-                    label={selectedValue2}
-                    items={dropdownItems2}
-                    onSelect={handleSelect2}
-                    disabled={isTranslating} // Disable during translation
-                />
+                <Dropdown label={selectedValue1} items={dropdownItems1} onSelect={handleSelect1} disabled={isTranslating} />
+                <SwitchButton onClick={handleSwitch} disabled={isTranslating} />
+                <Dropdown label={selectedValue2} items={dropdownItems2} onSelect={handleSelect2} disabled={isTranslating} />
             </div>
 
             {/* Flex Row for Textareas */}
             <div className="flex space-x-4 flex-[20_0_0%] w-full">
                 {/* Editable Textarea (Left Box) */}
                 <div className="relative flex-grow flex">
-                    <Textarea
-                        className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none"
-                        placeholder="Type here..."
-                        value={textareaValue} // Bind the state to the Textarea
-                        onChange={(e) => setTextareaValue(e.target.value)} // Update state on change
-                        disabled={isTranslating} // Disable during translation
-                    />
-                    <button
-                        onClick={handleClearText}
-                        className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700 transition"
-                        style={{ fontSize: '1.5rem' }}
-                    >
+                    <Textarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none" placeholder="Type here..." value={textareaValue} onChange={(e) => setTextareaValue(e.target.value)} disabled={isTranslating} />
+                    <button onClick={handleClearText} className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700 transition" style={{ fontSize: "1.5rem" }}>
                         <FaTrash />
                     </button>
                 </div>
 
                 {/* Non-editable Textarea (Right Box) */}
                 <div className="relative flex-grow flex">
-                    <NonEditableTextarea
-                        className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none"
-                        placeholder="Translation will appear here..."
-                        value={translationValue} // Bind the state of the non-editable Textarea
-                        readOnly
-                    />
+                    <NonEditableTextarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed opacity-100 resize-none" placeholder="Translation will appear here..." value={translationValue} readOnly />
                     <div className="absolute bottom-4 right-4 flex space-x-2 text-gray-500 hover:text-gray-700">
                         <FaRegClipboard
                             style={{
-                                fontSize: '1.5rem',
-                                opacity: isFlashing ? 1 : 0, // Flash effect via opacity
-                                transition: "opacity 0.5s ease", // Smooth transition
+                                fontSize: "1.5rem",
+                                opacity: isFlashing ? 1 : 0,
+                                transition: "opacity 0.5s ease",
                             }}
                         />
-                        <button
-                            onClick={handleCopyText}
-                            className="text-gray-500 hover:text-gray-700 transition"
-                            style={{ fontSize: '1.5rem' }} // Increase icon size
-                        >
+                        <button onClick={handleCopyText} className="text-gray-500 hover:text-gray-700 transition" style={{ fontSize: "1.5rem" }}>
                             <FaRegCopy />
                         </button>
                     </div>
@@ -195,7 +149,7 @@ const TranslatorBoxes = () => {
 
             {/* Translate Button */}
             <div className="flex space-x-4 flex-1 w-full">
-                <TranslateButton onClick={handleTranslateClick} disabled={isTranslating} /> {/* Disable button during translation */}
+                <TranslateButton onClick={handleTranslateClick} disabled={isTranslating} />
             </div>
         </div>
     );
