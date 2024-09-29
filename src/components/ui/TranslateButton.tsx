@@ -1,10 +1,14 @@
-// TranslateButton.tsx
-import React from 'react';
+import React from "react";
 
-const TranslateButton: React.FC = () => {
-  return (
-    <button
-      className="
+interface TranslateButtonProps {
+    onClick: () => void; // Adding the click handler
+}
+
+const TranslateButton: React.FC<TranslateButtonProps> = ({ onClick }) => {
+    return (
+        <button
+            onClick={onClick}
+            className="
         flex-1 
         flex 
         items-center 
@@ -17,11 +21,12 @@ const TranslateButton: React.FC = () => {
         rounded 
         transition 
         duration-300
+        text-xl
       "
-    >
-      Translate
-    </button>
-  );
+        >
+            Translate
+        </button>
+    );
 };
 
 export default TranslateButton;
