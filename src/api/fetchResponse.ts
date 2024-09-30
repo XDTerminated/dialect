@@ -1,9 +1,10 @@
 // src/api/fetchResponse.ts
 
 export interface ApiResponse {
-    content: any;
+    choices: unknown;
+    content: unknown;
     success: boolean;
-    data?: any;
+    data?: unknown;
     error?: string;
 }
 

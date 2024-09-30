@@ -5,7 +5,7 @@ import SwitchButton from "./ui/SwitchButton";
 import TranslateButton from "./ui/TranslateButton";
 import { fetchResponse } from "../api/fetchResponse";
 import { Progress } from "./ui/Progress";
-import { FaTrash, FaRegCopy, FaRegClipboard } from "react-icons/fa";
+import { FaRegClipboard } from "react-icons/fa";
 import TrashButton from "./ui/TrashButton";
 import CopyButton from "./ui/CopyButton";
 
@@ -19,12 +19,12 @@ const TranslatorBoxes = () => {
     const [dropdownItems1, setDropdownItems1] = useState<DropdownItem[]>([
         { label: "English", description: "" },
         { label: "Shakespearean", description: "" },
-        { label: "Gen Alpha", description: "" }
+        { label: "Gen Alpha", description: "" },
     ]);
     const [dropdownItems2, setDropdownItems2] = useState<DropdownItem[]>([
         { label: "English", description: "" },
         { label: "Shakespearean", description: "" },
-        { label: "Gen Alpha", description: "" }
+        { label: "Gen Alpha", description: "" },
     ]);
 
     // State for selected values
@@ -46,8 +46,8 @@ const TranslatorBoxes = () => {
     // Handle Switching Selected Components
     const handleSwitch = () => {
         // Swap dropdown items
-        setDropdownItems1(prevItems1 => {
-            setDropdownItems2(prevItems2 => {
+        setDropdownItems1((prevItems1) => {
+            setDropdownItems2(() => {
                 return [...prevItems1];
             });
             return [...dropdownItems2];
@@ -68,11 +68,9 @@ const TranslatorBoxes = () => {
     const handleSelect1 = (label: string, description?: string) => {
         setSelectedValue1(label);
         setSelectedDescription1(description || "");
-        setDropdownItems1(prevItems => {
-            const updatedItems = prevItems.map(item => 
-                item.label === label ? { ...item, description: description || "" } : item
-            );
-            if (!prevItems.some(item => item.label === label)) {
+        setDropdownItems1((prevItems) => {
+            const updatedItems = prevItems.map((item) => (item.label === label ? { ...item, description: description || "" } : item));
+            if (!prevItems.some((item) => item.label === label)) {
                 updatedItems.unshift({ label, description: description || "" });
             }
             return updatedItems;
@@ -82,20 +80,13 @@ const TranslatorBoxes = () => {
     const handleSelect2 = (label: string, description?: string) => {
         setSelectedValue2(label);
         setSelectedDescription2(description || "");
-        setDropdownItems2(prevItems => {
-            const updatedItems = prevItems.map(item => 
-                item.label === label ? { ...item, description: description || "" } : item
-            );
-            if (!prevItems.some(item => item.label === label)) {
+        setDropdownItems2((prevItems) => {
+            const updatedItems = prevItems.map((item) => (item.label === label ? { ...item, description: description || "" } : item));
+            if (!prevItems.some((item) => item.label === label)) {
                 updatedItems.unshift({ label, description: description || "" });
             }
             return updatedItems;
         });
-    };
-
-    // Function to count the words in the textarea
-    const countWords = (text: string) => {
-        return text.trim().split(/\s+/).length;
     };
 
     // Handler for Translate button click
@@ -110,7 +101,12 @@ const TranslatorBoxes = () => {
                 }, 100);
 
                 const result = await fetchResponse(textareaValue, selectedValue1, selectedValue2, selectedDescription1, selectedDescription2);
-                const extractedText = result?.["choices"]?.[0]?.["message"]?.["content"] || "No content available";
+                type ResultType = {
+                    choices?: { message?: { content?: string } }[];
+                };
+
+                const typedResult = result as ResultType;
+                const extractedText = typedResult.choices?.[0]?.message?.content || "No content available";
 
                 console.log(extractedText);
                 setTranslationValue(extractedText);
@@ -126,8 +122,7 @@ const TranslatorBoxes = () => {
                 setTranslationValue("An error occurred during translation.");
                 setIsTranslating(false);
             }
-        }
-        else {
+        } else {
             setTranslationValue("");
         }
     };
@@ -166,7 +161,7 @@ const TranslatorBoxes = () => {
                 {/* Editable Textarea (Left Box) */}
                 <div className="relative flex-grow flex">
                     <Textarea className="rounded-md border border-input bg-background text-xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed resize-none" placeholder="Type here..." value={textareaValue} onChange={(e) => setTextareaValue(e.target.value)} disabled={isTranslating} />
-                    <TrashButton onClick={handleClearText} disabled={isTranslating}/>
+                    <TrashButton onClick={handleClearText} disabled={isTranslating} />
                 </div>
 
                 {/* Non-editable Textarea (Right Box) */}
@@ -181,15 +176,14 @@ const TranslatorBoxes = () => {
                             }}
                         />
 
-
-                        <CopyButton onClick={handleCopyText} disabled={isTranslating}/>
+                        <CopyButton onClick={handleCopyText} disabled={isTranslating} />
                     </div>
                 </div>
             </div>
 
             {/* Translate Button */}
             <div className="flex space-x-4 flex-1 w-full">
-                <TranslateButton onClick={handleTranslateClick} disabled={isTranslating} isTranslating={isTranslating}/>
+                <TranslateButton onClick={handleTranslateClick} disabled={isTranslating} isTranslating={isTranslating} />
             </div>
         </div>
     );
