@@ -17,7 +17,7 @@ export const fetchResponse = async (text: string, translate1: string, translate2
 
     const prompt = `Translate [${text}] from [${translate1} (${description1})] to [${translate2} (${description2})]`;
 
-    const response = await fetch(`http://127.0.0.1:8000/bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`);
+    const response = await fetch(`http://translator-backend-mu.vercel.app/bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`);
 
     if (!response.ok) {
         throw new Error("Network response was not ok");
