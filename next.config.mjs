@@ -1,4 +1,5 @@
-module.exports = {
+// next.config.mjs
+const config = {
     async headers() {
         return [
             {
@@ -14,3 +15,5 @@ module.exports = {
         ];
     },
 };
+
+export default config;
