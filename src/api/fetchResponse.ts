@@ -17,7 +17,7 @@ export const fetchResponse = async (text: string, translate1: string, translate2
 
     const prompt = `Translate [${text}] from [${translate1} (${description1})] to [${translate2} (${description2})]`;
 
-    const response = await fetch(`https://www.translator-backend-i3yysk2b2-xdterminateds-projects.vercel.app/bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`);
+    const response = await fetch(`https://www.translator-backend-azure.vercel./bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`);
 
     if (!response.ok) {
         throw new Error("Network response was not ok");
