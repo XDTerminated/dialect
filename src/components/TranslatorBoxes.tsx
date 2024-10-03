@@ -102,11 +102,11 @@ const TranslatorBoxes = () => {
 
                 const result = await fetchResponse(textareaValue, selectedValue1, selectedValue2, selectedDescription1, selectedDescription2);
                 type ResultType = {
-                    choices?: { message?: { content?: string } }[];
+                    response?: string;
                 };
 
                 const typedResult = result as ResultType;
-                const extractedText = typedResult.choices?.[0]?.message?.content || "No content available";
+                const extractedText = typedResult.response || "No content available";
 
                 console.log(extractedText);
                 setTranslationValue(extractedText);
