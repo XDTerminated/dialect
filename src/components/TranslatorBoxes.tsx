@@ -132,10 +132,6 @@ const TranslatorBoxes = () => {
     };
 
     // Function to clear the textarea
-    const handleSwitchText = () => {
-        setTextareaValue(textareaValue);
-        setTranslationValue(translationValue);
-    };
 
     const handleClearText = () => {
         setTextareaValue("");
