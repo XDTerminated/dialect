@@ -62,6 +62,10 @@ const TranslatorBoxes = () => {
         const tempDescription = selectedDescription1;
         setSelectedDescription1(selectedDescription2);
         setSelectedDescription2(tempDescription);
+
+        const tempTextareaValue = textareaValue;
+        setTextareaValue(translationValue);
+        setTranslationValue(tempTextareaValue);
     };
 
     // Handler for dropdown selection
@@ -128,6 +132,11 @@ const TranslatorBoxes = () => {
     };
 
     // Function to clear the textarea
+    const handleSwitchText = () => {
+        setTextareaValue(textareaValue);
+        setTranslationValue(translationValue);
+    };
+
     const handleClearText = () => {
         setTextareaValue("");
         setTranslationValue("");
