@@ -17,7 +17,7 @@ export const fetchResponse = async (text: string, translate1: string, translate2
 
     const prompt = `Translate [${text}] from [${translate1} (${description1})] to [${translate2} (${description2})]`;
 
-    const response = await fetch(`https://translator-backend-azure.vercel.app//bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`, {
+    const response = await fetch(`https://translator-backend-azure.vercel.app/bedrock/call-bedrock/?prompt=${encodeURIComponent(prompt)}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
